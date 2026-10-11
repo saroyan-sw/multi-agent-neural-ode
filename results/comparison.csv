@@ -1,0 +1,2 @@
+model,hidden_layers,learning_rate,rollout_length,updates,training_seconds,train_rmse,test_rmse,zero_test_rmse,status
+AccelerationMLP,64-64,0.001,32,800,48.69,0.034713,0.03968,0.060492,SUCCESS

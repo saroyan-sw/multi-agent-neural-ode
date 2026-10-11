@@ -1,0 +1,12 @@
+ipykernel
+jupyterlab
+langchain-google-genai
+langgraph
+matplotlib
+nbclient
+nbformat
+numpy
+pandas
+pydantic
+scipy
+torch

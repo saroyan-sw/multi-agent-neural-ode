@@ -1,0 +1,46 @@
+Completed cell 2
+Libraries loaded and seed initialized to 42
+Completed cell 4
+Data prepared: u_full (4096,), y_full (4096,), dt = 1.638404e-03 s
+Train samples: 3072, Test samples: 1024
+Completed cell 6
+Scales computed from train set:
+  y_scale = 5.301930e-02
+  v_scale = 2.218151e+01
+  u_scale = 2.195673e-02
+  a_scale = 9.886329e+03
+Completed cell 8
+AccelerationMLP(
+  (net): Sequential(
+    (0): Linear(in_features=3, out_features=64, bias=True)
+    (1): Tanh()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): Tanh()
+    (4): Linear(in_features=64, out_features=1, bias=True)
+  )
+)
+Completed cell 10
+Update 100/800 | Loss: 7.318467e-03 | Elapsed: 5.85 s
+Update 200/800 | Loss: 5.017232e-04 | Elapsed: 11.75 s
+Update 300/800 | Loss: 4.804711e-05 | Elapsed: 17.99 s
+Update 400/800 | Loss: 3.379505e-04 | Elapsed: 24.39 s
+Update 500/800 | Loss: 1.541997e-04 | Elapsed: 30.84 s
+Update 600/800 | Loss: 1.059510e-04 | Elapsed: 36.74 s
+Update 700/800 | Loss: 1.327200e-04 | Elapsed: 42.69 s
+Update 800/800 | Loss: 1.652396e-03 | Elapsed: 48.69 s
+Training finished: 800 updates in 48.69 seconds
+Completed cell 12
+Baseline Settings and Evaluation Metrics:
+  Architecture: 3 -> 64 -> 64 -> 1 (Tanh)
+  Learning Rate: 1e-3 | Rollout Length: 32
+  Updates Completed: 800 | Training Time: 48.69 s
+  Train RMSE:      0.034713
+  Test RMSE:       0.039680
+  Zero Test RMSE:  0.060492
+Completed cell 14
+Saved comparison.csv:
+             model hidden_layers  learning_rate  rollout_length  updates  training_seconds  train_rmse  test_rmse  zero_test_rmse   status
+0  AccelerationMLP         64-64          0.001              32      800             48.69    0.034713    0.03968        0.060492  SUCCESS
+Saved test_prediction.png successfully.
+TRAIN_RMSE=0.034713
+TEST_RMSE=0.039680
