@@ -23,7 +23,7 @@ flowchart LR
 | `results/comparison.csv` | Machine-readable baseline settings and metrics |
 | `results/test_prediction.png` | Measured and predicted test signals |
 | `run_evidence/` | Execution summary and captured standard output/error |
-| `human_in_loop_runs/` | Destination for the two checkpointed Homework 2 transcripts |
+| `human_in_loop_runs/` | Committed checkpoint transcripts and destinations for later demonstration runs |
 | `tests/test_hitl_contract.py` | Offline interrupt, refusal, resume, and code-cell checks |
 
 ## Human-in-the-loop extension
@@ -32,7 +32,16 @@ Both agent variants now support a fifth `human` destination. The orchestrator's 
 
 The graph is compiled with an in-memory checkpointer. A human question pauses the current thread through `interrupt()`, and `Command(resume=...)` continues that same thread. The reply is appended to the shared dialogue with role `human`. Refusing a hard action returns control to the orchestrator without running the executor.
 
-The notebook includes two checkpointed demonstrations for the notebook-generating graph, followed by equivalent validation cells for the Python-file graph. Their transcripts are written under `human_in_loop_runs/` when the cells are executed.
+The notebook includes two checkpointed demonstrations for the notebook-generating graph, followed by equivalent validation cells for the Python-file graph. The demonstrations now pause in the running cell at `YOUR REPLY:`, accept a manually typed answer, and resume the same thread automatically.
+
+## Recorded human decisions
+
+Two real notebook-graph checkpoint snapshots are committed as report evidence:
+
+- [`ambiguous_run.json`](human_in_loop_runs/notebook_graph/ambiguous_run.json) records the ambiguous failure-diagnosis request, the human clarification that forbids repair or execution, and the general agent's explanation. Its `executor_runs` value is `0`.
+- [`hard_run_after_refusal.json`](human_in_loop_runs/notebook_graph/hard_run_after_refusal.json) records the scientist's larger-model comparison strategy, the first executor approval question, the human refusal, and the second approval interrupt. Its `executor_runs` value is also `0`, proving the refused action did not run.
+
+These files are checkpoint snapshots rather than invented example conversations. The accepted hard-action transcript and combined screen-recording transcript are created only after the corresponding interactive cells complete successfully.
 
 ## Successful baseline
 
