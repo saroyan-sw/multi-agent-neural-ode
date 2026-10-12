@@ -6,6 +6,8 @@ This repository contains a LangGraph workflow that asks several specialized agen
 flowchart LR
     O[Orchestrator] --> S[Scientist]
     S --> E[Notebook executor]
+    O --> H[Human interrupt]
+    H -->|resume same thread| O
     E --> C[Result checker]
     C -->|repair needed| E
     C -->|accepted| N[Executed Neural ODE notebook]
@@ -21,6 +23,16 @@ flowchart LR
 | `results/comparison.csv` | Machine-readable baseline settings and metrics |
 | `results/test_prediction.png` | Measured and predicted test signals |
 | `run_evidence/` | Execution summary and captured standard output/error |
+| `human_in_loop_runs/` | Destination for the two checkpointed Homework 2 transcripts |
+| `tests/test_hitl_contract.py` | Offline interrupt, refusal, resume, and code-cell checks |
+
+## Human-in-the-loop extension
+
+Both agent variants now support a fifth `human` destination. The orchestrator's model call selects it when a request is meaningfully ambiguous or when the next action would execute code, overwrite a result, or report a measurement.
+
+The graph is compiled with an in-memory checkpointer. A human question pauses the current thread through `interrupt()`, and `Command(resume=...)` continues that same thread. The reply is appended to the shared dialogue with role `human`. Refusing a hard action returns control to the orchestrator without running the executor.
+
+The notebook includes two checkpointed demonstrations for the notebook-generating graph, followed by equivalent validation cells for the Python-file graph. Their transcripts are written under `human_in_loop_runs/` when the cells are executed.
 
 ## Successful baseline
 
