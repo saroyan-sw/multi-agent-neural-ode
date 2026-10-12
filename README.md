@@ -24,6 +24,7 @@ flowchart LR
 | `results/test_prediction.png` | Measured and predicted test signals |
 | `run_evidence/` | Execution summary and captured standard output/error |
 | `human_in_loop_runs/` | Committed checkpoint transcripts and destinations for later demonstration runs |
+| `recordings/` | Two screen recordings of the interactive human-in-the-loop notebook runs |
 | `tests/test_hitl_contract.py` | Offline interrupt, refusal, resume, and code-cell checks |
 
 ## Human-in-the-loop extension
@@ -42,6 +43,17 @@ Two real notebook-graph checkpoint snapshots are committed as report evidence:
 - [`hard_run_after_refusal.json`](human_in_loop_runs/notebook_graph/hard_run_after_refusal.json) records the scientist's larger-model comparison strategy, the first executor approval question, the human refusal, and the second approval interrupt. Its `executor_runs` value is also `0`, proving the refused action did not run.
 
 These files are checkpoint snapshots rather than invented example conversations. The accepted hard-action transcript and combined screen-recording transcript are created only after the corresponding interactive cells complete successfully.
+
+## Screen recordings
+
+The actual notebook interactions are available as MP4 recordings:
+
+| Recording | Duration | Description |
+| --- | ---: | --- |
+| [`recording-2026-10-13-003225.mp4`](recordings/recording-2026-10-13-003225.mp4) | 4:44 | Extended interactive human-in-the-loop run, including the scientific planning and decision flow |
+| [`recording-2026-10-13-003930.mp4`](recordings/recording-2026-10-13-003930.mp4) | 0:55 | Short follow-up recording of the notebook interaction |
+
+The videos are stored with Git LFS because the longer recording is larger than GitHub's normal per-file Git limit. Clone with Git LFS enabled to retrieve the MP4 files locally.
 
 ## Successful baseline
 
