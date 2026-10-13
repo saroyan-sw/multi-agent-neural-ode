@@ -1,6 +1,7 @@
 ipykernel
 jupyterlab
 langchain-google-genai
+langchain-openai
 langgraph>=1.2.14,<2
 matplotlib
 nbclient

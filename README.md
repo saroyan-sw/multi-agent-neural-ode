@@ -1,6 +1,6 @@
 # Multi-Agent Neural ODE
 
-This repository contains a LangGraph workflow that asks several specialized agents to design, generate, execute, check, and repair a compact Neural ODE experiment for the Silverbox benchmark.
+This repository contains two LangGraph workflows. The first asks specialized agents to design, generate, execute, check, and repair a compact Neural ODE experiment for the Silverbox benchmark. The second autonomously optimizes a binary DMD pattern on a noisy simulated optical bench.
 
 ```mermaid
 flowchart LR
@@ -19,13 +19,44 @@ flowchart LR
 | Path | Purpose |
 | --- | --- |
 | `agent/task6.ipynb` | Multi-agent LangGraph workflow and prompts |
+| `agent/task2.ipynb` | Autonomous simulated beam-focusing agent and tool |
 | `generated/Duffing_generated.ipynb` | Notebook produced by the agents and executed successfully |
 | `results/comparison.csv` | Machine-readable baseline settings and metrics |
 | `results/test_prediction.png` | Measured and predicted test signals |
 | `run_evidence/` | Execution summary and captured standard output/error |
 | `human_in_loop_runs/` | Committed checkpoint transcripts and destinations for later demonstration runs |
-| `recordings/` | Two screen recordings of the interactive human-in-the-loop notebook runs |
+| `recordings/` | Two human-in-the-loop recordings and one autonomous beam-focusing recording |
 | `tests/test_hitl_contract.py` | Offline interrupt, refusal, resume, and code-cell checks |
+
+## Autonomous simulated beam focusing
+
+`agent/task2.ipynb` implements Homework 2 Task 2 as a separate, self-contained notebook. After the user submits `Focus the beam.`, the graph completes three experiments without requesting settings or approvals.
+
+```mermaid
+flowchart LR
+    U[Focus the beam] --> O[Orchestrator]
+    O --> S[Scientist]
+    S -->|settings and reason| O
+    O --> E[Executor]
+    E --> T[focus_beam tool]
+    T -->|camera image and enhancement| O
+    O -->|three successful experiments| F[Final comparison]
+```
+
+The scientist establishes a baseline, then changes one setting at a time based on the previous measured enhancement. The executor is the only role that calls the predefined focusing tool. Every run uses the same fixed complex transmission matrix and an amplitude-only `16 × 16` binary DMD. The simulated `24 × 24` camera includes independent Gaussian noise.
+
+The notebook validates the optical model before starting the agents and saves the completed run under `focusing_runs/`:
+
+| Output | Purpose |
+| --- | --- |
+| `experiments.csv` | Settings, reasoning, measured enhancement, runtime, and image paths for all three experiments |
+| `task2_transcript.json` | Complete autonomous agent dialogue and tool results |
+| `run_XX/result.json` | Structured result for one experiment |
+| `run_XX/camera_comparison.png` | Before-and-after camera images using one color scale |
+| `run_XX/dmd_pattern.png` | Best binary DMD pattern |
+| `run_XX/enhancement_history.png` | Best measured enhancement over the search |
+
+The lecture-comparison section remains explicitly marked for the real lecture image or value. The notebook does not invent a reference result.
 
 ## Human-in-the-loop extension
 
@@ -52,6 +83,7 @@ The actual notebook interactions are available as MP4 recordings:
 | --- | ---: | --- |
 | [`recording-2026-10-13-003225.mp4`](recordings/recording-2026-10-13-003225.mp4) | 4:44 | Extended interactive human-in-the-loop run, including the scientific planning and decision flow |
 | [`recording-2026-10-13-003930.mp4`](recordings/recording-2026-10-13-003930.mp4) | 0:55 | Short follow-up recording of the notebook interaction |
+| [`beam-focusing.mp4`](recordings/beam-focusing.mp4) | 5:50 | Autonomous Task 2 run showing the agent choosing settings, calling the focusing tool, and comparing the three experiments |
 
 The videos are stored with Git LFS because the longer recording is larger than GitHub's normal per-file Git limit. Clone with Git LFS enabled to retrieve the MP4 files locally.
 
@@ -94,6 +126,8 @@ pip install -r requirements.txt
 $env:GOOGLE_API_KEY = "your-key-here"
 jupyter lab agent/task6.ipynb
 ```
+
+For the autonomous focusing experiment, open `agent/task2.ipynb`. Task 2 uses OpenRouter's `openrouter/free` router through `ChatOpenAI`. Its API-key cell asks for a fresh `OPENROUTER_API_KEY` without saving it. Run the notebook from top to bottom, enter the key once in the hidden prompt, and then execute the single `Focus the beam.` request.
 
 The API key is read from the environment and is not stored in the repository. Run `generated/Duffing_generated.ipynb` directly if you only want to reproduce the numerical experiment and already have the data file.
 
